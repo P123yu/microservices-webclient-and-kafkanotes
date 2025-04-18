@@ -355,6 +355,39 @@ public class KafkaTopic {
 
 }
 
+// other microservices ============================================================================================
+
+
+
+
+package com.example.SpringKafka.consumer;
+
+import com.example.SpringKafka.model.User;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.stereotype.Service;
+
+@Service
+public class KafkaConsumer {
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @KafkaListener(topics = "firstTopic15", groupId = "group1")
+    public void sendToTopic1(String rawJson) throws JsonProcessingException {
+        System.out.println("Raw message: " + rawJson);
+            User user = objectMapper.readValue(rawJson, User.class);
+            // Use getters or log the object
+            System.out.println("Parsed User: " + user);
+            System.out.println("User Name: " + user.getName());
+            System.out.println("User City: " + user.getCity());
+    }
+
+
+}
 
 
 
