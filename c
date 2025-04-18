@@ -3,8 +3,17 @@
 // first microservice ====================================================================
 
 here when we hit first microservices controller then this controller is calling the webclient function and then  webcllient hits third
-party server like mockapi to fetch json data now we can send this json data to other microservices 2 using aapache kafka as a event
-microservices as a distribution system now we can save that json data which is consumed by second json data 
+party server like mockapi to fetch json data so this response is going to first microservices now we are defining kafka topic and producer
+in the first microservices and whatever response coming form mockapi (using webclient) we are sending that json response data to second
+microservices where in second microservices we are using kafka consumer and that kafka consumer is also targeting the kafka topic of first
+microservices (other microservices 2 using aapache kafka) as a event microservices as a distribution system now we can save that 
+json data which is consumed by second json data 
+
+
+note when we send json data over kafka from one microservices to other then in first microservices we have to convert java object to 
+json string format and while receiving this incoming json string format in kafka consumer at second microservices we again convert 
+json format to java object so that we can use it in second microsrvices and save in dbor can use setter and getter on that converted java 
+object and note that this conversion is possible because of jackson object mapper 
 
 // basic webclient 
 
