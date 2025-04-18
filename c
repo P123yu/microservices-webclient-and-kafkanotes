@@ -15,6 +15,8 @@ json string format and while receiving this incoming json string format in kafka
 json format to java object so that we can use it in second microsrvices and save in dbor can use setter and getter on that converted java 
 object and note that this conversion is possible because of jackson object mapper 
 
+=================================  FIRST MICROSERVICES (PRODUCER) ========================================================
+
 // basic webclient 
 
 // model ==============================================================================================================================================================
@@ -371,6 +373,62 @@ public class KafkaTopic {
 
 }
 
+
+
+// APPLICATION PROPERTIES
+
+spring.application.name=basic-webclient
+
+# Kafka Bootstrap Server
+spring.kafka.bootstrap-servers=localhost:9092
+
+ spring.kafka.consumer.value-deserializer=org.springframework.kafka.support.serializer.JsonDeserializer
+
+# ===============================
+# Producer Properties
+# ===============================
+spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer
+spring.kafka.producer.value-serializer=org.springframework.kafka.support.serializer.JsonSerializer
+
+
+
+// TOTAL APPLICATION PROPERTIES (EXTRA IF NEEDED) =====================================================================
+
+spring.application.name=basic-webclient
+
+# Kafka Bootstrap Server
+spring.kafka.bootstrap-servers=localhost:9092
+
+## Kafka Consumer Configuration
+#spring.kafka.consumer.auto-offset-reset=earliest
+#spring.kafka.consumer.key-deserializer=org.apache.kafka.common.serialization.StringDeserializer
+##spring.kafka.consumer.value-deserializer=org.apache.kafka.common.serialization.StringDeserializer
+
+# If you're using JSON (optional):
+ spring.kafka.consumer.value-deserializer=org.springframework.kafka.support.serializer.JsonDeserializer
+# spring.kafka.consumer.properties.spring.json.trusted.packages=*
+#
+## Kafka Producer Configuration
+#spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer
+##spring.kafka.producer.value-serializer=org.apache.kafka.common.serialization.StringSerializer
+#
+## If you're sending Java objects as JSON (optional):
+# spring.kafka.producer.value-serializer=org.springframework.kafka.support.serializer.JsonSerializer
+
+
+
+
+# ===============================
+# Producer Properties
+# ===============================
+spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer
+spring.kafka.producer.value-serializer=org.springframework.kafka.support.serializer.JsonSerializer
+
+#spring.kafka.producer.properties.partitioner.class=org.apache.kafka.clients.producer.RoundRobinPartitioner
+
+
+
+
 // other microservices ============================================================================================
 
 
@@ -405,6 +463,198 @@ public class KafkaConsumer {
 
 }
 
+
+
+// APPLICATION PROPERTIES
+
+
+
+# ========== Kafka Common ==========
+spring.kafka.bootstrap-servers=localhost:9092
+
+# ========== Consumer ==========
+spring.kafka.consumer.group-id=group1
+spring.kafka.consumer.auto-offset-reset=earliest
+spring.kafka.consumer.key-deserializer=org.apache.kafka.common.serialization.StringDeserializer
+spring.kafka.consumer.value-deserializer=org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+
+# Delegate to JsonDeserializer
+spring.kafka.consumer.properties.spring.deserializer.value.delegate.class=org.springframework.kafka.support.serializer.JsonDeserializer
+
+# Allow JSON deserialization from any package (or just your model package)
+spring.kafka.consumer.properties.spring.json.trusted.packages=*
+
+# Always treat incoming JSON as User class
+spring.kafka.consumer.properties.spring.json.value.default.type=com.example.SpringKafka.model.User
+
+# ========== Producer ==========
+spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer
+spring.kafka.producer.value-serializer=org.springframework.kafka.support.serializer.JsonSerializer
+
+# Optional: don't include type headers from producer (keeps payload clean)
+spring.kafka.producer.properties.spring.json.add.type.headers=false
+
+# Server
+server.port=9008
+
+
+
+// TOTAL APPLICATION PROPERTIES (EXTRA IF NEEDED) =====================================================================
+
+###spring.application.name=SpringKafka
+###
+#### Kafka Bootstrap Server
+###spring.kafka.bootstrap-servers=localhost:9092
+###
+#### Kafka Consumer Configuration
+###spring.kafka.consumer.auto-offset-reset=earliest
+###spring.kafka.consumer.key-deserializer=org.apache.kafka.common.serialization.StringDeserializer
+####spring.kafka.consumer.value-deserializer=org.apache.kafka.common.serialization.StringDeserializer
+###
+#### If you're using JSON (optional):
+### spring.kafka.consumer.value-deserializer=org.springframework.kafka.support.serializer.JsonDeserializer
+#### spring.kafka.consumer.properties.spring.json.trusted.packages=*
+###
+#### Kafka Producer Configuration
+###spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer
+####spring.kafka.producer.value-serializer=org.apache.kafka.common.serialization.StringSerializer
+###
+#### If you're sending Java objects as JSON (optional):
+### spring.kafka.producer.value-serializer=org.springframework.kafka.support.serializer.JsonSerializer
+###
+####spring.kafka.producer.properties.partitioner.class=org.apache.kafka.clients.producer.RoundRobinPartitioner
+###
+###server.port=9008
+##
+##
+###
+#### ===============================
+#### Kafka Common Configuration
+#### ===============================
+###spring.kafka.bootstrap-servers=localhost:9092
+###spring.kafka.consumer.group-id=group1
+###
+#### ===============================
+#### Consumer Properties
+#### ===============================
+###spring.kafka.consumer.key-deserializer=org.apache.kafka.common.serialization.StringDeserializer
+###spring.kafka.consumer.value-deserializer=org.springframework.kafka.support.serializer.JsonDeserializer
+###
+#### Important: Trust your package to deserialize User object
+###spring.kafka.consumer.properties.spring.json.trusted.packages=com.example.SpringKafka.model
+###
+#### ===============================
+#### Producer Properties
+#### ===============================
+###spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer
+###spring.kafka.producer.value-serializer=org.springframework.kafka.support.serializer.JsonSerializer
+###server.port=9008
+##
+##
+##
+##
+##
+### ===============================
+### Kafka Common Configuration
+### ===============================
+##spring.kafka.bootstrap-servers=localhost:9092
+###spring.kafka.consumer.group-id=group1
+##
+### ===============================
+### Consumer Properties
+### ===============================
+##spring.kafka.consumer.key-deserializer=org.apache.kafka.common.serialization.StringDeserializer
+###spring.kafka.consumer.value-deserializer=org.springframework.kafka.support.serializer.JsonDeserializer
+##
+### Important: Trust your package to deserialize User object
+###spring.kafka.consumer.properties.spring.json.trusted.packages=com.example.SpringKafka.model
+##
+### ===============================
+### Producer Properties
+### ===============================
+##spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer
+##spring.kafka.producer.value-serializer=org.springframework.kafka.support.serializer.JsonSerializer
+##server.port=9008
+##
+###spring.kafka.consumer.properties.spring.json.trusted.packages=*
+##
+### Use ErrorHandlingDeserializer to avoid app crash on bad messages
+###spring.kafka.consumer.value-deserializer=org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+##spring.kafka.consumer.properties.spring.deserializer.value.delegate.class=org.springframework.kafka.support.serializer.JsonDeserializer
+##
+### ? Trust all packages (or restrict to yours)
+##spring.kafka.consumer.properties.spring.json.trusted.packages=*
+##
+### ? Always deserialize as this class, no matter the producer's type header
+##spring.kafka.consumer.properties.spring.json.value.default.type=com.example.SpringKafka.model.User
+##spring.kafka.consumer.value-deserializer=org.springframework.kafka.support.serializer.JsonDeserializer
+#
+#
+#
+## ===============================
+## Application Info
+## ===============================
+#spring.application.name=SpringKafka
+#server.port=9008
+#
+## ===============================
+## Kafka Common Configuration
+## ===============================
+#spring.kafka.bootstrap-servers=localhost:9092
+#
+## ===============================
+## Kafka Consumer Configuration
+## ===============================
+#spring.kafka.consumer.group-id=group1
+#spring.kafka.consumer.auto-offset-reset=earliest
+#
+## Use ErrorHandlingDeserializer to prevent crashes on bad messages
+#spring.kafka.consumer.key-deserializer=org.apache.kafka.common.serialization.StringDeserializer
+#spring.kafka.consumer.value-deserializer=org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+#
+## Delegate actual deserialization to JsonDeserializer
+#spring.kafka.consumer.properties.spring.deserializer.value.delegate.class=org.springframework.kafka.support.serializer.JsonDeserializer
+#
+## Allow deserialization from specific package or all
+#spring.kafka.consumer.properties.spring.json.trusted.packages=*
+#
+## Optional: Force the expected Java type (no need for __TypeId__ header)
+#spring.kafka.consumer.properties.spring.json.value.default.type=com.example.SpringKafka.model.User
+#
+## ===============================
+## Kafka Producer Configuration
+## ===============================
+#spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer
+#spring.kafka.producer.value-serializer=org.springframework.kafka.support.serializer.JsonSerializer
+
+
+# ========== Kafka Common ==========
+spring.kafka.bootstrap-servers=localhost:9092
+
+# ========== Consumer ==========
+spring.kafka.consumer.group-id=group1
+spring.kafka.consumer.auto-offset-reset=earliest
+spring.kafka.consumer.key-deserializer=org.apache.kafka.common.serialization.StringDeserializer
+spring.kafka.consumer.value-deserializer=org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+
+# Delegate to JsonDeserializer
+spring.kafka.consumer.properties.spring.deserializer.value.delegate.class=org.springframework.kafka.support.serializer.JsonDeserializer
+
+# Allow JSON deserialization from any package (or just your model package)
+spring.kafka.consumer.properties.spring.json.trusted.packages=*
+
+# Always treat incoming JSON as User class
+spring.kafka.consumer.properties.spring.json.value.default.type=com.example.SpringKafka.model.User
+
+# ========== Producer ==========
+spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer
+spring.kafka.producer.value-serializer=org.springframework.kafka.support.serializer.JsonSerializer
+
+# Optional: don't include type headers from producer (keeps payload clean)
+spring.kafka.producer.properties.spring.json.add.type.headers=false
+
+# Server
+server.port=9008
 
 
 
