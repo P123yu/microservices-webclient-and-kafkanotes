@@ -1,4 +1,11 @@
 
+
+// first microservice ====================================================================
+
+here when we hit first microservices controller then this controller is calling the webclient function and then  webcllient hits third
+party server like mockapi to fetch json data now we can send this json data to other microservices 2 using aapache kafka as a event
+microservices as a distribution system now we can save that json data which is consumed by second json data 
+
 // basic webclient 
 
 // model ==============================================================================================================================================================
